@@ -1,29 +1,27 @@
 const request = require('supertest');
-const app = require('./app');
+const app = require('../app');
 
 describe('GET /etudiant/:id', () => {
-    it('should return a student with correct format', async () => {
+    it('should return the exact student object', async () => {
+        const expectedStudent = { id: 1, name: 'Alain', age: 22 };
+
         const response = await request(app).get('/etudiant/1');
 
         expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty('id', '1');
-        expect(response.body).toHaveProperty('name', "Alain");
-        expect(response.body).toHaveProperty('age', 22);
-        expect(typeof response.body.age).toBe('number');
+        expect(response.body).toEqual(expectedStudent);
     });
-    it('should return a student with correct format', async () => {
+    it('should return the exact student object', async () => {
+        const expectedStudent = { id: 2, name: 'Céline', age: 40 };
+
         const response = await request(app).get('/etudiant/2');
 
         expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty('id', '2');
-        expect(response.body).toHaveProperty('name', "Céline");
-        expect(response.body).toHaveProperty('age', 40);
-        expect(typeof response.body.age).toBe('number');
+        expect(response.body).toEqual(expectedStudent);
     });
-    it('should return 404 if student not found', async () => {
-        const response = await request(app).get('/etudiant/999');
+    it('should return an error if there is no student with this ID', async () => {
 
+        const response = await request(app).get('/etudiant/999');
         expect(response.statusCode).toBe(404);
-        expect(response.body).toHaveProperty('error');
+        expect(response.body).toEqual({ error: "Étudiant non trouvé" });
     });
 });

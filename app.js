@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
 
 app.get('/etudiant/:id', (req, res) => {
   const id = req.params.id
-  let etudiant = etudiants.filter(etudiant => etudiant.id === id)
-  res.json(etudiant)
+  let etudiant = etudiants.filter(etudiant => etudiant.id === parseInt(id))
+  etudiant && etudiant.length > 0 ? res.status(200).json(etudiant[0]) : res.status(404).json({ error: 'Étudiant non trouvé' });
 })
 
 app.listen(80, function () { console.log("serveur express start") });
